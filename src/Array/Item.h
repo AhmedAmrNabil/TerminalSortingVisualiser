@@ -12,6 +12,16 @@ class Item {
         this->color = color;
         this->data = data;
     }
+    // Item(Item& item){
+    //     this->color = item.color;
+    //     this->data = item.data;
+    // }
+
+    // Item& operator=(Item& item){
+    //     this->color = item.color;
+    //     this->data = item.data;
+    //     return *this;
+    // }
     void setData(int data) {
         this->data = data;
     }
