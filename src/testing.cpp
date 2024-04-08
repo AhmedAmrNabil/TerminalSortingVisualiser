@@ -62,9 +62,11 @@ int main() {
                 return 0;
         }
         if (validOption) {
+			initTermios(0);
             visual.sort(sort);
             cout << "Press Any Key to continue" << endl;
-            getch(0);
+            getchar();
+			resetTermios();
         }
     } while (c != 27);
     return 0;

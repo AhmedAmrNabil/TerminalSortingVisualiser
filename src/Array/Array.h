@@ -21,44 +21,6 @@
 // }
 using namespace std;
 
-struct RGB {
-    int r, g, b;
-};
-
-inline string& operator+=(string& s, RGB rgb) {
-    s += "\033[38;2;" + to_string(rgb.r) + ";" + to_string(rgb.g) + ";" + to_string(rgb.b) + "m";
-    return s;
-}
-inline float hue2rgb(float p, float q, float t) {
-    if (t < 0)
-        t += 1;
-    if (t > 1)
-        t -= 1;
-    if (t < 1. / 6)
-        return p + (q - p) * 6 * t;
-    if (t < 1. / 2)
-        return q;
-    if (t < 2. / 3)
-        return p + (q - p) * (2. / 3 - t) * 6;
-
-    return p;
-}
-inline RGB hsl2rgb(float h, float s, float l) {
-    RGB result;
-
-    if (0 == s) {
-        result.r = result.g = result.b = l;  // achromatic
-    } else {
-        float q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        float p = 2 * l - q;
-        result.r = hue2rgb(p, q, h + 1. / 3) * 255;
-        result.g = hue2rgb(p, q, h) * 255;
-        result.b = hue2rgb(p, q, h - 1. / 3) * 255;
-    }
-
-    return result;
-}
-
 class PrettyArray {
     Item* arr;
     int size;
@@ -74,21 +36,20 @@ class PrettyArray {
         ioctl(0, TIOCGWINSZ, &w);
         // startingPos = 1;
         if (size == 0) {
-            unsigned short rows = 4 * (w.ws_row - 7);
+            unsigned short rows = 4 * (w.ws_row - 8);
             this->size = min(w.ws_col, rows) / 2;
         }else{
             this->size = size;
         }
         startingPos = (w.ws_col - this->size * 2) / 2 + 1;
-        defaultColor = overlay0;
-        highlightColor = text;
+        highlightColor = white;
         writeCount = 0;
         accessCount = 0;
         arr = new Item[this->size];
         this->size = this->size;
         for (int i = 0; i < this->size; i++) {
             arr[i].setData(i + 1);
-            arr[i].setColor(defaultColor);
+            arr[i].unMark(this->size);
         }
         cout << "\033[?25l";
     }
@@ -105,19 +66,13 @@ class PrettyArray {
             bars += "\033[" + to_string(start++) + ";" + to_string(startingPos) + "H";
             for (int j = 0; j < size; ++j) {
                 if (arr[j] >= i + size % 2) {
-                    if (arr[j].getColor() == highlightColor)
-                        bars += "\033[38;2;255;255;255m";
-                    else
-                        bars += hsl2rgb(arr[j].getData() / double(size), 0.8, 0.6);
-                    // bars += "█▌";
-                    bars += "██";
+                    bars += arr[j].getColor();
+                    // bars += "██";
+                    bars += "█▌";
                 } else if (arr[j] >= i - 1 + size % 2) {
-                    if (arr[j].getColor() == highlightColor)
-                        bars += "\033[38;2;255;255;255m";
-                    else
-                        bars += hsl2rgb(arr[j].getData() / double(size), 0.8, 0.6);
-                    // bars += "▄▖";
-                    bars += "▄▄";
+                    bars += arr[j].getColor();
+                    // bars += "▄▄";
+                    bars += "▄▖";
                 } else
                     bars += reset + "  ";
             }
@@ -129,6 +84,7 @@ class PrettyArray {
     void printStats(string sort,bool done = false) {
         int start = w.ws_row - (4 + done);
         cout << "\033[" << start << ";1H";
+        if(done)cout << "\033[0J";
         cout << reset;
         cout << "Sort: " << sort << endl;
         cout << "Array size: " << size << endl;
@@ -149,8 +105,8 @@ class PrettyArray {
     }
 
     void unmarkItem(int i, int j = -1) {
-        if (j != -1) arr[j].setColor(defaultColor);
-        arr[i].setColor(defaultColor);
+        if (j != -1) arr[j].unMark(this->size);
+        arr[i].unMark(this->size);
         // this->printBars();
     }
 

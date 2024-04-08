@@ -28,5 +28,6 @@ inline std::string base = "\033[38;2;30; 30;46m";
 inline std::string mantle = "\033[38;2;24;24;37m";
 inline std::string crust = "\033[38;2;17;17;27m";
 inline std::string reset = "\033[0m";
+inline std::string white = "\033[38;2;255;255;255m";
 
 #endif
