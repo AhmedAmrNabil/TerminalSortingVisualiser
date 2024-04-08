@@ -3,9 +3,10 @@
 using std::cout,std::endl;
 
 int main(){
-	PrettyArray a(25);
-	a.print();
+	PrettyArray a(30);
+	a.printBars();
 	a.shuffle();
-	a.print();
+	a.markItem(5);
+	// a.printBars();
 	return 0;
 }

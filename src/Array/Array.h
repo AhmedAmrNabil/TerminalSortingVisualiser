@@ -1,12 +1,24 @@
 #ifndef ARRAY_H
 #define ARRAY_H
-#include <iostream>
+#include <sys/ioctl.h>
+
 #include <algorithm>
+#include <iostream>
 #include <random>
 #include <string>
 
 #include "../colors.h"
 #include "Item.h"
+
+// int main (void)
+// {
+//     struct winsize w;
+//     ioctl(0, TIOCGWINSZ, &w);
+
+//     printf ("lines %d\n", w.ws_row);
+//     printf ("columns %d\n", w.ws_col);
+//     return 0;
+// }
 using namespace std;
 
 class PrettyArray {
@@ -18,7 +30,7 @@ class PrettyArray {
     std::string highlightColor;
 
    public:
-    PrettyArray(int size = 20) {
+    PrettyArray(int size) {
         defaultColor = overlay2;
         highlightColor = red;
         arr = new Item[size];
@@ -30,30 +42,25 @@ class PrettyArray {
     }
 
     void printBars() {
-        std::string bars = "\e[H";
+        struct winsize w;
+        ioctl(0, TIOCGWINSZ, &w);
+        int startingPos = (w.ws_col - size) / 2;
+        int start = 1;
+        std::string bars = "";
         for (int i = size; i > 0; i -= 2) {
+            bars += "\e[" + to_string(start++) + ";" + to_string(startingPos) + "H";
             for (int j = 0; j < size; ++j) {
-                if (size % 2 == 0) {
-                    if (arr[j] >= i)
-                        bars += arr[j].getColor() + "▌";
-                    else if (arr[j] >= i - 1)
-                        bars += arr[j].getColor() + "▖";
-                    else
-                        bars += reset + " ";
-                } else {
-                    if (arr[j] > i)
-                        bars += arr[j].getColor() + "▌";
-                    else if (arr[j] > i - 1)
-                        bars += arr[j].getColor() + "▖";
-                    else
-                        bars += reset + " ";
-                }
+                if (arr[j] >= i + size % 2)
+                    bars += arr[j].getColor() + "▌";
+                else if (arr[j] >= i - 1 + size % 2)
+                    bars += arr[j].getColor() + "▖";
+                else
+                    bars += reset + " ";
             }
-            bars += "\n";
         }
         std::cout << bars;
     }
-    void printStats(){
+    void printStats() {
         cout << "Array acessed: " << accessCount;
     }
 
@@ -61,12 +68,12 @@ class PrettyArray {
         return arr[i];
     }
 
-    void markItem(int i){
+    void markItem(int i) {
         arr[i].setColor(highlightColor);
         this->printBars();
     }
 
-    void unmarkItem(int i){
+    void unmarkItem(int i) {
         arr[i].setColor(defaultColor);
         this->printBars();
     }
@@ -74,10 +81,8 @@ class PrettyArray {
     void shuffle() {
         std::random_device rd;
         std::mt19937 g(rd());
-        std::shuffle(arr, arr + size,g);
+        std::shuffle(arr, arr + size, g);
     }
-
-    
 };
 
 #endif
