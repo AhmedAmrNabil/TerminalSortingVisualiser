@@ -18,3 +18,37 @@ void Visualiser::bubbleSort() {
     }
     print();
 }
+
+void Visualiser::quickSort() {
+    currentSort = "QuickSort";
+    A.shuffle();
+    quickSort(0, A.getSize() - 1);
+}
+
+void Visualiser::quickSort(int start, int end) {
+    if (start >= end) return;
+    Item pivot = A[end];
+    int pivotIndex = start;
+    A.markItem(end);
+    for (int i = start; i < end; i++) {
+        A.markItem(i);
+        if (A[i] < pivot) {
+            A.markItem(pivotIndex);
+            print();
+            A.swap(i, pivotIndex);
+            print();
+            A.unmarkItem(pivotIndex);
+            pivotIndex++;
+        }
+        print();
+        A.unmarkItem(i);
+    }
+    A.swap(end, pivotIndex);
+    A.unmarkItem(end);
+    A.markItem(pivotIndex);
+    print();
+    A.unmarkItem(pivotIndex);
+    quickSort(start, pivotIndex - 1);
+    quickSort(pivotIndex + 1, end);
+    print();
+}
