@@ -60,7 +60,7 @@ class PrettyArray {
     }
 
     void printBars() {
-        int delay = 5;
+        int delay = 10;
         int start = 2;
         std::string bars = "";
         for (int i = size; i > 0; i -= 2) {
@@ -94,7 +94,7 @@ class PrettyArray {
     }
 
     Item& operator[](int i) {
-        printBars();
+        // printBars();
         ++accessCount;
         return arr[i];
     }

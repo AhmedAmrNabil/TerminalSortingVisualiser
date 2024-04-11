@@ -20,7 +20,6 @@ void Visualiser::bubbleSort() {
         A.unmarkItem(size - 1 - i);
         if (!swapped) break;
     }
-    print();
 }
 
 void Visualiser::quickSort() {
@@ -54,7 +53,6 @@ void Visualiser::quickSort(int start, int end) {
     A.unmarkItem(pivotIndex);
     quickSort(start, pivotIndex - 1);
     quickSort(pivotIndex + 1, end);
-    print();
 }
 
 void Visualiser::merge(int start, int mid, int end) {
@@ -95,7 +93,6 @@ void Visualiser::merge(int start, int mid, int end) {
         print();
         A.unmarkItem(mid + right);
     }
-    print();
     delete[] tmp1;
     delete[] tmp2;
 }
@@ -138,7 +135,6 @@ void Visualiser::alternateMerge(int start, int mid, int end) {
         print();
         A.unmarkItem(start + i);
     }
-    print();
 
     delete[] arr;
 }
@@ -155,4 +151,51 @@ void Visualiser::mergeSort() {
     currentSort = "MergeSort";
     A.shuffle();
     mergeSort(0, A.getSize() - 1);
+}
+
+void Visualiser::altMergeSort(int start, int end) {
+    if (start >= end) return;
+    int mid = (start + end) / 2;
+    altMergeSort(start, mid);
+    altMergeSort(mid + 1, end);
+    alternateMerge(start, mid, end);
+}
+
+void Visualiser::altMergeSort() {
+    currentSort = "Alt MergeSort";
+    A.shuffle();
+    altMergeSort(0, A.getSize() - 1);
+}
+
+
+
+// int Visualiser::binarySearch(int item,
+//                              int low, int high) {
+//     if (high <= low)
+//         return (item > A[low].getData()) ? (low + 1) : low;
+
+//     int mid = (low + high) / 2;
+//     if (A[mid].getData() == item) return mid + 1;
+//     if (A[mid].getData() < item) return binarySearch(item, mid + 1, high);
+//     return binarySearch(item, low, mid - 1);
+// }
+
+void Visualiser::insertionSort() {
+    A.shuffle();
+    currentSort = "InsertionSort";
+    int j;
+    Item key;
+    for (int i = 1; i < A.getSize(); i++) {
+        key = A[i];
+        j = i - 1;
+
+        while (key < A[j] && j >= 0) {
+            A.markItem(j,j+1);    
+            print();
+            A.unmarkItem(j,j+1);    
+            A[j + 1] = A[j];
+            --j;
+        }
+        A[j + 1] = key;
+    }
 }

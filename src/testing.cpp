@@ -37,6 +37,8 @@ void printMenu() {
          << "[1]   Visualize Quick Sort" << endl
          << "[2]   Visualize Bubble Sort" << endl
          << "[3]   Visualize Merge Sort" << endl
+         << "[4]   Visualize Alternate Merge Sort" << endl
+         << "[5]   Visualize Insertion Sort" << endl
          << "[ESC] Exit" << endl;
 };
 
@@ -63,6 +65,14 @@ int main() {
                 break;
             case '3':
                 sort = Merge;
+                validOption = true;
+                break;
+            case '4':
+                sort = AltMerge;
+                validOption = true;
+                break;
+            case '5':
+                sort = Insertion;
                 validOption = true;
                 break;
             case 27:
