@@ -38,7 +38,7 @@ class PrettyArray {
         if (size == 0) {
             unsigned short rows = 4 * (w.ws_row - 8);
             this->size = min(w.ws_col, rows) / 2;
-        }else{
+        } else {
             this->size = size;
         }
         startingPos = (w.ws_col - this->size * 2) / 2 + 1;
@@ -49,7 +49,8 @@ class PrettyArray {
         this->size = this->size;
         for (int i = 0; i < this->size; i++) {
             arr[i].setData(i + 1);
-            arr[i].unMark(this->size);
+            arr[i].setSize(this->size);
+            arr[i].unMark();
         }
         cout << "\033[?25l";
     }
@@ -59,7 +60,7 @@ class PrettyArray {
     }
 
     void printBars() {
-        int delay = 20;
+        int delay = 10;
         int start = 2;
         std::string bars = "";
         for (int i = size; i > 0; i -= 2) {
@@ -81,10 +82,10 @@ class PrettyArray {
         std::cout << bars;
         usleep(delay * 1000);
     }
-    void printStats(string sort,bool done = false) {
+    void printStats(string sort, bool done = false) {
         int start = w.ws_row - (4 + done);
         cout << "\033[" << start << ";1H";
-        if(done)cout << "\033[0J";
+        if (done) cout << "\033[0J";
         cout << reset;
         cout << "Sort: " << sort << endl;
         cout << "Array size: " << size << endl;
@@ -99,14 +100,22 @@ class PrettyArray {
     }
 
     void markItem(int i, int j = -1) {
-        if (j != -1) arr[j].setColor(highlightColor);
+        if (j != -1) {
+            arr[j].setSelected(true);
+            arr[j].setColor(highlightColor);
+        }
         arr[i].setColor(highlightColor);
+        arr[i].setSelected(true);
         // this->printBars();
     }
 
     void unmarkItem(int i, int j = -1) {
-        if (j != -1) arr[j].unMark(this->size);
-        arr[i].unMark(this->size);
+        if (j != -1) {
+            arr[j].setSelected(false);
+            arr[j].unMark();
+        }
+        arr[i].setSelected(false);
+        arr[i].unMark();
         // this->printBars();
     }
 

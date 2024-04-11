@@ -1,20 +1,24 @@
 #include "Visualiser.h"
 
 void Visualiser::bubbleSort() {
-    A.shuffle();
     currentSort = "Bubble";
+    A.shuffle();
+    bool swapped = false;
     int size = A.getSize();
     for (int i = 0; i < size; i++) {
         A.markItem(0);
+        swapped = false;
         for (int j = 0; j < size - 1 - i; j++) {
             A.markItem(j + 1);
             if (A[j] > A[j + 1]) {
                 A.swap(j, j + 1);
+                swapped = true;
             }
             print();
             A.unmarkItem(j);
         }
         A.unmarkItem(size - 1 - i);
+        if (!swapped) break;
     }
     print();
 }
@@ -51,4 +55,59 @@ void Visualiser::quickSort(int start, int end) {
     quickSort(start, pivotIndex - 1);
     quickSort(pivotIndex + 1, end);
     print();
+}
+
+void Visualiser::merge(int start, int mid, int end) {
+    int firstSize = mid - start + 1;
+    int secondSize = end - mid;
+    int* tmp1 = new int[firstSize];
+    int* tmp2 = new int[secondSize];
+
+    for (int i = 0; i < firstSize; ++i)
+        tmp1[i] = A[start + i].getData();
+    for (int i = 0; i < secondSize; ++i)
+        tmp2[i] = A[mid + 1 + i].getData();
+
+    int left = 0;
+    int right = 0;
+    int current = start;
+
+    while (left < firstSize && right < secondSize) {
+        A.markItem(start + left, mid + 1 + right);
+        print();
+        if (tmp1[left] <= tmp2[right]) {
+            A[current++].setData(tmp1[left++]);
+            A.unmarkItem(start + left - 1, mid + 1 + right);
+        } else {
+            A[current++].setData(tmp2[right++]);
+            A.unmarkItem(mid + right, start + left);
+        }
+    }
+    while (left < firstSize) {
+        A.markItem(start + left);
+        A[current++].setData(tmp1[left++]);
+        print();
+        A.unmarkItem(start + left - 1);
+    }
+    while (right < secondSize) {
+        A.markItem(mid + 1 + right);
+        A[current++].setData(tmp2[right++]);
+        print();
+        A.unmarkItem(mid + right);
+    }
+    print();
+}
+
+void Visualiser::mergeSort(int start, int end) {
+    if (start >= end) return;
+    int mid = (start + end) / 2;
+    mergeSort(start, mid);
+    mergeSort(mid + 1, end);
+    merge(start, mid, end);
+}
+
+void Visualiser::mergeSort() {
+    currentSort = "MergeSort";
+    A.shuffle();
+    mergeSort(0, A.getSize() - 1);
 }

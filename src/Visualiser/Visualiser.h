@@ -23,6 +23,7 @@ class Visualiser {
         A.printBars();
         A.printStats(currentSort);
     }
+
     void sort(SORTS s){
         cout << "\033[J\033[2J\033[3J";
         switch (s){
@@ -32,12 +33,19 @@ class Visualiser {
             case Bubble:
                 bubbleSort();
                 break;
+            case Merge:
+                mergeSort();
+                break;
         }
         A.printStats(currentSort,true);
     }
+
     void bubbleSort();
     void quickSort(int start, int end);
     void quickSort();
+    void merge(int start,int mid,int end);
+    void mergeSort(int start,int end);
+    void mergeSort();
 };
 
 #endif

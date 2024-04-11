@@ -7,6 +7,8 @@
 
 class Item {
     int data;
+    int size;
+    bool selected;
     std::string color;
     float hue2rgb(float p, float q, float t) {
         if (t < 0)
@@ -23,7 +25,7 @@ class Item {
         return p;
     }
 
-    void hsl2rgb(float data,float s, float l) {
+    void hsl2rgb(float data, float s, float l) {
         this->color = "\033[38;2;";
 
         if (0 == s) {
@@ -43,12 +45,20 @@ class Item {
     Item(int data = 0, std::string color = reset) {
         this->color = color;
         this->data = data;
+        selected = false;
+    }
+    void setSize(int size) {
+        this->size = size;
     }
     void setData(int data) {
         this->data = data;
+        if (!selected) unMark();
     }
-    void unMark(int size) {
-        hsl2rgb(data/double(size),0.8, 0.6);
+    void setSelected(bool selected) {
+        this->selected = selected;
+    }
+    void unMark() {
+        hsl2rgb(data / double(size), 0.8, 0.6);
     }
     void setColor(std::string color) {
         this->color = color;

@@ -32,41 +32,46 @@ void printMenu() {
     cout << "\033[J\033[2J\033[3J\033[H";
     cout << "======= Sorting Algorithm Visualizer =======" << endl
          << endl;
-    cout << "Main Menu:" << endl;
-    cout << "[1]   Visualize Quick Sort" << endl;
-    cout << "[2]   Visualize Bubble Sort" << endl;
-    cout << "[ESC] Exit" << endl
-         << endl;
+    cout << "Main Menu:" << endl
+         << endl
+         << "[1]   Visualize Quick Sort" << endl
+         << "[2]   Visualize Bubble Sort" << endl
+         << "[3]   Visualize Merge Sort" << endl
+         << "[ESC] Exit" << endl;
 };
 
 int main() {
     char c;
     Visualiser visual;
     SORTS sort;
-	bool validOption;
+    bool validOption;
     do {
         printMenu();
         c = getch(0);
-		validOption = false;
+        validOption = false;
         switch (c) {
             case '1':
                 sort = Quick;
-				validOption = true;
+                validOption = true;
                 break;
             case '2':
                 sort = Bubble;
-				validOption = true;
+                validOption = true;
+                break;
+            case '3':
+                sort = Merge;
+                validOption = true;
                 break;
             case 27:
                 cout << "\033[HExited.";
                 return 0;
         }
         if (validOption) {
-			initTermios(0);
+            initTermios(0);
             visual.sort(sort);
             cout << "Press Any Key to continue" << endl;
             getchar();
-			resetTermios();
+            resetTermios();
         }
     } while (c != 27);
     return 0;
