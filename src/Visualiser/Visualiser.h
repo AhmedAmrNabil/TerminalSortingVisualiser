@@ -37,10 +37,14 @@ class Visualiser {
     }
 
     void sort(SORTS s) {
-        cout << "\033[J\033[2J\033[3J";
+        cout << "\033[J\033[2J\033[3J\033[?25l";
         (this->*funcArr[s])();
         A.printBars();
         A.printStats(currentSort, true);
+
+    }
+    void setDelay(int delay){
+        A.setDelay(delay);
     }
 
     void bubbleSort();

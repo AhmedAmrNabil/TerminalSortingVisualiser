@@ -30,6 +30,7 @@ class PrettyArray {
     std::string highlightColor;
     int startingPos;
     winsize w;
+    int delay;
 
    public:
     PrettyArray(int size) {
@@ -41,6 +42,7 @@ class PrettyArray {
         } else {
             this->size = size;
         }
+        delay = 10;
         startingPos = (w.ws_col - this->size * 2) / 2 + 1;
         highlightColor = white;
         writeCount = 0;
@@ -52,15 +54,17 @@ class PrettyArray {
             arr[i].setSize(this->size);
             arr[i].unMark();
         }
-        cout << "\033[?25l";
+       
     }
     ~PrettyArray() {
-        cout << "\033[?25h";
         delete[] arr;
     }
 
+    void setDelay (int delay){
+        this->delay = delay;
+    }
+
     void printBars() {
-        int delay = 10;
         int start = 2;
         std::string bars = "";
         for (int i = size; i > 0; i -= 2) {
