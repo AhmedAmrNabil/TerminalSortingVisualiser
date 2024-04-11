@@ -44,6 +44,7 @@ class Visualiser {
     void quickSort(int start, int end);
     void quickSort();
     void merge(int start,int mid,int end);
+    void alternateMerge(int start,int mid,int end);
     void mergeSort(int start,int end);
     void mergeSort();
 };

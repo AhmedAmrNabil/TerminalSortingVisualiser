@@ -96,8 +96,51 @@ void Visualiser::merge(int start, int mid, int end) {
         A.unmarkItem(mid + right);
     }
     print();
-    delete [] tmp1;
-    delete [] tmp2;
+    delete[] tmp1;
+    delete[] tmp2;
+}
+
+void Visualiser::alternateMerge(int start, int mid, int end) {
+    int size = end - start + 1;
+    Item* arr = new Item[size];
+    int left = start;
+    int right = mid + 1;
+    int current = 0;
+
+    while (left <= mid && right <= end) {
+        A.markItem(left, right);
+        print();
+        if (A[left] < A[right]) {
+            A.unmarkItem(left);
+            arr[current++] = A[left++];
+        } else {
+            A.unmarkItem(right);
+            arr[current++] = A[right++];
+        }
+    }
+
+    while (left <= mid) {
+        A.markItem(left);
+        print();
+        A.unmarkItem(left);
+        arr[current++] = A[left++];
+    }
+    while (right <= end) {
+        A.markItem(right);
+        print();
+        A.unmarkItem(right);
+        arr[current++] = A[right++];
+    }
+
+    for (int i = 0; i < size; i++) {
+        A[start + i] = arr[i];
+        A.markItem(start + i);
+        print();
+        A.unmarkItem(start + i);
+    }
+    print();
+
+    delete[] arr;
 }
 
 void Visualiser::mergeSort(int start, int end) {
