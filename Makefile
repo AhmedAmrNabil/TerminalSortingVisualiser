@@ -1,5 +1,8 @@
-.PHONY: test
-test:
-	@clear
+
+
+
+test:compile
+	@clear && ./bin/main
+compile:
 	@mkdir -p ./bin
-	@g++ ./src/testing.cpp ./src/Visualiser/Visualiser.cpp -o ./bin/testing && ./bin/testing
+	g++ ./src/testing.cpp ./src/Visualiser/Visualiser.cpp -o ./bin/main
