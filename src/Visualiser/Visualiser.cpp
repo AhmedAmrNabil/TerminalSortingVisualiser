@@ -60,13 +60,13 @@ void Visualiser::quickSort(int start, int end) {
 void Visualiser::merge(int start, int mid, int end) {
     int firstSize = mid - start + 1;
     int secondSize = end - mid;
-    int* tmp1 = new int[firstSize];
-    int* tmp2 = new int[secondSize];
+    Item* tmp1 = new Item[firstSize];
+    Item* tmp2 = new Item[secondSize];
 
     for (int i = 0; i < firstSize; ++i)
-        tmp1[i] = A[start + i].getData();
+        tmp1[i] = A[start + i];
     for (int i = 0; i < secondSize; ++i)
-        tmp2[i] = A[mid + 1 + i].getData();
+        tmp2[i] = A[mid + 1 + i];
 
     int left = 0;
     int right = 0;
@@ -75,27 +75,29 @@ void Visualiser::merge(int start, int mid, int end) {
     while (left < firstSize && right < secondSize) {
         A.markItem(start + left, mid + 1 + right);
         print();
-        if (tmp1[left] <= tmp2[right]) {
-            A[current++].setData(tmp1[left++]);
-            A.unmarkItem(start + left - 1, mid + 1 + right);
+        if (tmp1[left] < tmp2[right]) {
+            A[current++] = tmp1[left++];
+            A.unmarkItem(start + left - 1);
         } else {
-            A[current++].setData(tmp2[right++]);
-            A.unmarkItem(mid + right, start + left);
+            A[current++] = tmp2[right++];
+            A.unmarkItem(mid + right);
         }
     }
     while (left < firstSize) {
         A.markItem(start + left);
-        A[current++].setData(tmp1[left++]);
+        A[current++] = tmp1[left++];
         print();
         A.unmarkItem(start + left - 1);
     }
     while (right < secondSize) {
         A.markItem(mid + 1 + right);
-        A[current++].setData(tmp2[right++]);
+        A[current++] = tmp2[right++];
         print();
         A.unmarkItem(mid + right);
     }
     print();
+    delete [] tmp1;
+    delete [] tmp2;
 }
 
 void Visualiser::mergeSort(int start, int end) {
