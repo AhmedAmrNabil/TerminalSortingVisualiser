@@ -4,10 +4,11 @@
 
 enum SORTS {
     Quick,
-    Bubble,
+    Heap,
     Merge,
     AltMerge,
     Insertion,
+    Bubble,
     Selection,
     SIZE,
 };
@@ -27,6 +28,7 @@ class Visualiser {
         funcArr[Merge] = &Visualiser::mergeSort;
         funcArr[Insertion] = &Visualiser::insertionSort;
         funcArr[AltMerge] = &Visualiser::altMergeSort;
+        funcArr[Heap] = &Visualiser::heapSort;
     }
 
     void print() {
@@ -51,6 +53,8 @@ class Visualiser {
     void altMergeSort(int start,int end);
     void altMergeSort();
     void insertionSort();
+    void heapify(int i,int n);
+    void heapSort();
     // int binarySearch(int item, int low, int high);
 };
 

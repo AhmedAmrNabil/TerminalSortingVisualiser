@@ -35,15 +35,13 @@ void printMenu() {
     cout << "Main Menu:" << endl
          << endl
          << "[1]   Visualize Quick Sort" << endl
-         << "[2]   Visualize Bubble Sort" << endl
+         << "[2]   Visualize Heap Sort" << endl
          << "[3]   Visualize Merge Sort" << endl
          << "[4]   Visualize Alternate Merge Sort" << endl
          << "[5]   Visualize Insertion Sort" << endl
+         << "[6]   Visualize Bubble Sort" << endl
          << "[ESC] Exit" << endl;
 };
-
-
-
 
 int main() {
     char c;
@@ -54,38 +52,15 @@ int main() {
         printMenu();
         c = getch(0);
         validOption = false;
-        switch (c) {
-            case '1':
-                sort = Quick;
-                validOption = true;
-                break;
-            case '2':
-                sort = Bubble;
-                validOption = true;
-                break;
-            case '3':
-                sort = Merge;
-                validOption = true;
-                break;
-            case '4':
-                sort = AltMerge;
-                validOption = true;
-                break;
-            case '5':
-                sort = Insertion;
-                validOption = true;
-                break;
-            case 27:
-                cout << "\033[HExited.";
-                return 0;
-        }
+        if (c - '1' < SORTS::SIZE && c != 27) validOption = true;
         if (validOption) {
             initTermios(0);
-            visual.sort(sort);
+            visual.sort(SORTS(c - '1'));
             cout << "Press Any Key to continue" << endl;
             getchar();
             resetTermios();
         }
     } while (c != 27);
+    cout << "\033[HExited.";
     return 0;
 }

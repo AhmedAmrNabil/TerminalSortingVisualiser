@@ -167,8 +167,6 @@ void Visualiser::altMergeSort() {
     altMergeSort(0, A.getSize() - 1);
 }
 
-
-
 // int Visualiser::binarySearch(int item,
 //                              int low, int high) {
 //     if (high <= low)
@@ -190,12 +188,63 @@ void Visualiser::insertionSort() {
         j = i - 1;
 
         while (key < A[j] && j >= 0) {
-            A.markItem(j,j+1);    
+            A.markItem(j, j + 1);
             print();
-            A.unmarkItem(j,j+1);    
+            A.unmarkItem(j, j + 1);
             A[j + 1] = A[j];
             --j;
         }
         A[j + 1] = key;
+    }
+}
+
+void Visualiser::heapify(int i, int n) {
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    int largest = i;
+    A.markItem(largest);
+
+    if (left < n && A[largest] < A[left]) {
+        A.markItem(left);
+        print();
+        A.unmarkItem(largest);
+        largest = left;
+    }
+
+    if (right < n && A[largest] < A[right]) {
+        A.markItem(right);
+        print();
+        A.unmarkItem(largest);
+        largest = right;
+    }
+
+    if (largest != i) {
+        A.markItem(i);
+        print();
+        A.swap(largest, i);
+        print();
+        A.unmarkItem(largest, i);
+        heapify(largest, n - 1);
+    } else
+        A.unmarkItem(largest);
+
+}
+
+void Visualiser::heapSort() {
+    A.shuffle();
+    currentSort = "Heap Sort";
+
+    //building max heap
+    for (int i = A.getSize() / 2 - 1; i >= 0; --i) {
+        heapify(i, A.getSize());
+    }
+
+    for (int i = A.getSize() - 1; i >= 0; --i) {
+        A.markItem(0, i);
+        print();
+        A.swap(0, i);
+        print();
+        A.unmarkItem(0, i);
+        heapify(0, i);
     }
 }
