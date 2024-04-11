@@ -60,7 +60,7 @@ class PrettyArray {
     }
 
     void printBars() {
-        int delay = 0;
+        int delay = 5;
         int start = 2;
         std::string bars = "";
         for (int i = size; i > 0; i -= 2) {

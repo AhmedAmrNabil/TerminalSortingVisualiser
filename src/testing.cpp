@@ -40,40 +40,42 @@ void printMenu() {
          << "[ESC] Exit" << endl;
 };
 
+
+
+
 int main() {
     char c;
     Visualiser visual;
     SORTS sort;
     bool validOption;
-    visual.sort(Merge);
-    // do {
-    //     printMenu();
-    //     c = getch(0);
-    //     validOption = false;
-    //     switch (c) {
-    //         case '1':
-    //             sort = Quick;
-    //             validOption = true;
-    //             break;
-    //         case '2':
-    //             sort = Bubble;
-    //             validOption = true;
-    //             break;
-    //         case '3':
-    //             sort = Merge;
-    //             validOption = true;
-    //             break;
-    //         case 27:
-    //             cout << "\033[HExited.";
-    //             return 0;
-    //     }
-    //     if (validOption) {
-    //         initTermios(0);
-    //         visual.sort(sort);
-    //         cout << "Press Any Key to continue" << endl;
-    //         getchar();
-    //         resetTermios();
-    //     }
-    // } while (c != 27);
+    do {
+        printMenu();
+        c = getch(0);
+        validOption = false;
+        switch (c) {
+            case '1':
+                sort = Quick;
+                validOption = true;
+                break;
+            case '2':
+                sort = Bubble;
+                validOption = true;
+                break;
+            case '3':
+                sort = Merge;
+                validOption = true;
+                break;
+            case 27:
+                cout << "\033[HExited.";
+                return 0;
+        }
+        if (validOption) {
+            initTermios(0);
+            visual.sort(sort);
+            cout << "Press Any Key to continue" << endl;
+            getchar();
+            resetTermios();
+        }
+    } while (c != 27);
     return 0;
 }
